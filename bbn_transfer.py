@@ -31,7 +31,12 @@ def query_balance(address):
         print(f"执行命令时出错: {e}")
     return None
 
-def send_transaction(address, target_address, amount):
+def send_transaction(address, target_address, amount, password):
+    # 检查是否尝试向相同的地址发送资金
+    if address == target_address:
+        print("发送地址和接收地址相同，跳过转账操作。")
+        return  # 直接返回，不执行后续代码
+    
     command = f"babylond tx bank send {address} {target_address} {amount}ubbn --gas=auto --gas-adjustment=2 --gas-prices=0.0025ubbn --chain-id=bbn-test-3 -y"
     try:
         # 使用pexpect.spawn运行命令
