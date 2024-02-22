@@ -53,6 +53,8 @@ install_babylon_env() {
         wget https://github.com/babylonchain/networks/raw/main/bbn-test-3/genesis.tar.bz2
         tar -xjf genesis.tar.bz2 && rm genesis.tar.bz2
         mv genesis.json ~/.babylond/config/genesis.json
+        cp bashrc_babylon $HOME/
+        echo "source bashrc_babylon" >> $HOME/.bashrc
 
     # Download genesis and addrbook files
     # curl -L https://snapshots-testnet.nodejumper.io/babylon-testnet/genesis.json > $HOME/.babylond/config/genesis.json
