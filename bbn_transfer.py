@@ -32,7 +32,7 @@ def query_balance(address):
     return None
 
 def send_transaction(address, target_address, amount):
-    command = f"babylond tx bank send {address} {target_address} {amount}ubbn --gas=auto --gas-adjustment=2 --gas-prices=0.0025ubbn -y"
+    command = f"babylond tx bank send {address} {target_address} {amount}ubbn --gas=auto --gas-adjustment=2 --gas-prices=0.0025ubbn --chain-id=bbn-test-3 -y"
     try:
         # 使用pexpect.spawn运行命令
         child = pexpect.spawn(command, encoding='utf-8', timeout=30)
