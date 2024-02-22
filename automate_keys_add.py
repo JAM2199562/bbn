@@ -1,7 +1,7 @@
 import pexpect
 
 # 打开文件并读取所有助记词
-with open('bbn_mnemonic.txt', 'r') as file:
+with open('bbn_mnemonics.txt', 'r') as file:
     mnemonics = [line.strip() for line in file]
 
 # 定义一个字典来存储配置项
