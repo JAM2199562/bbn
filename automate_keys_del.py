@@ -25,7 +25,7 @@ password = config.get('password', '')  # 使用默认值以防 'password' 不存
 
 # 对每个助记词执行命令
 for i, mnemonic in enumerate(mnemonics, start=1):
-    child = pexpect.spawn(f'babylond keys add {i} --recover')
+    child = pexpect.spawn(f'babylond keys delete {i} -y')
     child.expect('Enter your bip39 mnemonic')
     child.sendline(mnemonic)
     
