@@ -1,2 +1,12 @@
 alias syncinfo="curl -s localhost:20657/status | jq .result | jq .sync_info"
 alias status=$'curl -sS http://127.0.0.1:20657/net_info | jq -r \'.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"\' | awk -F \':\' \'{print $1":"$(NF)}\''
+qb() {
+    # 检查是否提供了参数
+    if [ -z "$1" ]; then
+        echo "请提供一个地址作为参数"
+        return 1
+    fi
+
+    # 调用 babylond 工具查询余额
+    babylond query bank balances "$1"
+}
