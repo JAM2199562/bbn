@@ -81,8 +81,10 @@ def main():
                 continue
 
             if balance >= amount_in_micro:
-                print(f"准备从 {address} 发送 {transfer_amount} BBN 到 {target_address}...")
-                send_transaction(address, target_address, str(amount_in_micro))
+                print(f"准备从 {address} 发送 {transfer_amount} BBN 到 {target_address} ...")
+                # 确保传递 password 参数
+                send_transaction(address, target_address, str(amount_in_micro), password)
+
             else:
                 print(f"{address} 的余额不足以发送。余额为：{balance / 1_000_000} BBN")
 
