@@ -59,7 +59,7 @@ install_babylon_env() {
     # curl -L https://snapshots-testnet.nodejumper.io/babylon-testnet/addrbook.json > $HOME/.babylond/config/addrbook.json
 
     # Set seeds
-    sed -i -e 's|^seeds *=.*|seeds = "49b4685f16670e784a0fe78f37cd37d56c7aff0e@3.14.89.82:26656,9cb1974618ddd541c9a4f4562b842b96ffaf1446@3.16.63.237:26656"|' $HOME/.babylond/config/config.toml
+    sed -i -e 's|^seeds *=.*|seeds = "49b4685f16670e784a0fe78f37cd37d56c7aff0e@3.14.89.82:20656,9cb1974618ddd541c9a4f4562b842b96ffaf1446@3.16.63.237:26656,1ecc4a9d703ad52d16bf30a592597c948c115176@165.154.244.14:26656,0ccb869ba63cf7730017c357189d01b20e4eb277@185.84.224.125:20656,5463943178cdb57a02d6d20964e4061dfcf0afb4@142.132.154.53:20656,b82b321380d1d949d1eed6da03696b1b2ef987ba@148.251.176.236:3000,49b15e202497c231ebe7b2a56bb46cfc60eff78c@135.181.134.151:46656,3774fb9996de16c2f2280cb2d938db7af88d50be@162.62.52.147:26656,26cb133489436035829b6920e89105046eccc841@178.63.95.125:26656,326fee158e9e24a208e53f6703c076e1465e739d@193.34.212.39:26659,868730197ee267db3c772414ec1cd2085cc036d4@148.251.235.130:17656,9d840ebd61005b1b1b1794c0cf11ef253faf9a84@43.157.95.203:26656"|' $HOME/.babylond/config/config.toml
 
     # Set minimum gas price
     sed -i -e 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.00001ubbn"|' $HOME/.babylond/config/app.toml
