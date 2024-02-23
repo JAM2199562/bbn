@@ -40,7 +40,6 @@ total_balance = 0
 not_increased_lines = []
 zero_balance_lines = []
 
-# 查询余额的函数
 def query_balance(address):
     # 在每个线程内部创建数据库连接
     conn_local = sqlite3.connect(db_file)
@@ -54,7 +53,8 @@ def query_balance(address):
         print(f"Command output for {address}: {result.stdout}")
         print(f"Command error for {address}: {result.stderr}")
 
-        balance_raw = re.search(r'"amount":"(\d+)"', result.stdout)
+        # 确保正则表达式正确匹配格式 "amount": "数字"
+        balance_raw = re.search(r'"amount":\s*"(\d+)"', result.stdout)
         balance = int(balance_raw.group(1)) if balance_raw else 0
         print(f"Queried balance for {address}: {balance}")  # 实时输出
     except Exception as e:
@@ -73,6 +73,7 @@ def query_balance(address):
     conn_local.close()
 
     return address, balance
+
 
 
 # 主程序
