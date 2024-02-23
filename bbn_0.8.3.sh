@@ -37,10 +37,10 @@ install_babylon_env() {
     git clone https://github.com/babylonchain/babylon
     cd babylon
     git checkout v0.8.3
-
+    
     # Build binary
     make install
-
+    export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     # Set node CLI configuration
     babylond config chain-id bbn-test-3
     babylond config keyring-backend test
