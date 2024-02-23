@@ -49,6 +49,11 @@ def query_balance(address):
     try:
         # 执行外部命令获取余额
         result = subprocess.run(['babylond', 'query', 'bank', 'balances', address, '--log_format', 'json'], capture_output=True, text=True)
+        
+        # 输出命令的返回值用于调试
+        print(f"Command output for {address}: {result.stdout}")
+        print(f"Command error for {address}: {result.stderr}")
+
         balance_raw = re.search(r'"amount":"(\d+)"', result.stdout)
         balance = int(balance_raw.group(1)) if balance_raw else 0
         print(f"Queried balance for {address}: {balance}")  # 实时输出
@@ -68,6 +73,7 @@ def query_balance(address):
     conn_local.close()
 
     return address, balance
+
 
 # 主程序
 def main():
