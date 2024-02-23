@@ -42,20 +42,28 @@ not_increased_lines = []
 zero_balance_lines = []
 
 def query_balance(address):
+    # 在函数内部创建新的数据库连接
+    conn_local = sqlite3.connect(db_file)
+    cur_local = conn_local.cursor()
+
     # 执行外部命令获取余额
     result = subprocess.run(['babylond', 'query', 'bank', 'balances', address, '--log_format', 'json'], capture_output=True, text=True)
     balance_raw = re.search(r'"amount":"(\d+)"', result.stdout)
     balance = int(balance_raw.group(1)) if balance_raw else 0
     
     # 更新数据库
-    cur.execute('INSERT OR REPLACE INTO balances (address, balance, date) VALUES (?, ?, ?)', (address, balance, current_date))
-    conn.commit()
+    cur_local.execute('INSERT OR REPLACE INTO balances (address, balance, date) VALUES (?, ?, ?)', (address, balance, current_date))
+    conn_local.commit()
 
     # 写入文件
     with open(balance_file, 'a') as f:
         f.write(f"{address} {balance}\n")
 
+    # 关闭函数内的数据库连接
+    conn_local.close()
+
     return address, balance
+
 
 # 并发查询余额
 with ThreadPoolExecutor(max_workers=2) as executor:
