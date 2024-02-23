@@ -66,7 +66,7 @@ def query_balance(line_address):
         balance = int(balance_match.group(1)) / 1_000_000 if balance_match else 0
 
         # 输出当前正在处理的地址和查询到的余额
-        print(f"第 {line_number} 行地址: {address}，余额为: {balance:.6f}")
+        print(f"第 {line_number:3} 行的地址: {address}，余额为: {balance:>10.6f}")
 
     except Exception as e:
         balance = 0  # 在遇到异常时设置余额为0
