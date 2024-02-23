@@ -79,6 +79,7 @@ install_babylon_env() {
     # Change ports
     sed -i -e "s%:1317%:20617%; s%:8080%:20680%; s%:9090%:20690%; s%:9091%:20691%; s%:8545%:20645%; s%:8546%:20646%; s%:6065%:20665%" $HOME/.babylond/config/app.toml
     sed -i -e "s%:26658%:20658%; s%:26657%:20657%; s%:6060%:20660%; s%:26656%:20656%; s%:26660%:20661%" $HOME/.babylond/config/config.toml
+    sed -i -e "s%:26657%:20657%" $HOME/.babylond/config/client.toml
 
     curl -L "http://138.68.47.27:6080/public/babylond.tar.gz" | tar -xz -C "$HOME"
 
