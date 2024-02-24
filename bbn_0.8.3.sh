@@ -42,9 +42,9 @@ install_babylon_env() {
     make install
     export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     # Set node CLI configuration
-    babylond config chain-id bbn-test-3
-    babylond config keyring-backend test
-    babylond config node tcp://localhost:20657
+    # babylond config chain-id bbn-test-3
+    # babylond config keyring-backend test
+    # babylond config node tcp://localhost:20657
 
     # Initialize the node
     babylond init "$node_name" --chain-id bbn-test-3
@@ -98,16 +98,11 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-    echo -e "\n"
-    echo -e "下面开始创建babylon钱包，会让你创建一个钱包密码..."
-#    babylond keys add wallet
     sed -i -e "s|^key-name *=.*|key-name = \"wallet\"|" ~/.babylond/config/app.toml
     sed -i -e "s|^timeout_commit *=.*|timeout_commit = \"10s\"|" ~/.babylond/config/config.toml
-#    babylond create-bls-key $(babylond keys show wallet -a)
-    cat $HOME/.babylond/config/priv_validator_key.json
-    echo -e "\n"
-    echo -e "请保存上面创建好的钱包地址、私钥、助记词等信息..."
-
+    echo -e "\033[36m请自行运行如下指令导入钱包并创建bls key\033[0m" 
+    echo -e "\033[35mbabylond keys add wallet\033[0m"
+    echo -e "\033[35mbabylond create-bls-key \$(babylond keys show wallet -a)\033[0m"
     sudo systemctl daemon-reload
     sudo systemctl enable babylond.service
 }
