@@ -124,21 +124,33 @@ get_log() {
 }
 
 start_validator_node() {
-    read -e -p "请输入你的验证者名称: " validator_name
-    babylond tx checkpointing create-validator \
-    --amount="1000000ubbn" \
-    --pubkey=$(babylond tendermint show-validator) \
-    --moniker="$validator_name" \
-    --chain-id="bbn-test-3" \
+    read -e -p "请输入你的验证者名称: " moniker_name
+# 创建bls key
+  babylond create-bls-key $(babylond keys show wallet -a)
+#创建validator.json
+  VALIDATOR_KEY=$(babylond tendermint show-validator | jq -r '.key')
+cat > /root/.babylond/validator.json << EOF
+{
+    "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"$VALIDATOR_KEY"},
+    "amount": "1000000ubbn",
+    "moniker": "$moniker_name",
+    "identity": "",
+    "website": "",
+    "security": "",
+    "details": "",
+    "commission-rate": "0.1",
+    "commission-max-rate": "0.2",
+    "commission-max-change-rate": "0.01",
+    "min-self-delegation": "1"
+}
+EOF
+sudo systemctl restart babylond.service
+babylond tx checkpointing create-validator /root/.babylond/validator.json \
+    --chain-id=bbn-test-3 \
     --gas="auto" \
-    --gas-adjustment=1.2 \
-    --gas-prices="0.0025ubbn" \
-    --keyring-backend=test \
-    --from="wallet" \
-    --commission-rate="0.10" \
-    --commission-max-rate="0.20" \
-    --commission-max-change-rate="0.01" \
-    --min-self-delegation="1"
+    --gas-adjustment="1.5" \
+    --gas-prices="0.025ubbn" \
+    --from=wallet
 }
 
 echo && echo -e " ${Red_font_prefix}babylon节点 一键安装脚本${Font_color_suffix} by \033[1;35moooooyoung\033[0m
