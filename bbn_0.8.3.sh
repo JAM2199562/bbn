@@ -108,6 +108,7 @@ EOF
     babylond create-bls-key $(babylond keys show wallet -a)
     sudo systemctl restart babylond.service
     sudo systemctl status babylond.service
+    sudo systemctl stop babylond.service
 }
 
 start_babylon_node() {
