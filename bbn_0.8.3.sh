@@ -125,6 +125,7 @@ get_log() {
 
 start_validator_node() {
     read -e -p "请输入你的验证者名称: " moniker_name
+    read -e -p "请输入质押的数量(需确保余额充足): " amount
 # 创建bls key
   babylond create-bls-key $(babylond keys show wallet -a)
 #创建validator.json
@@ -132,7 +133,7 @@ start_validator_node() {
 cat > /root/.babylond/validator.json << EOF
 {
     "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"$VALIDATOR_KEY"},
-    "amount": "1000000ubbn",
+    "amount": "${amount}ubbn",
     "moniker": "$moniker_name",
     "identity": "",
     "website": "",
@@ -144,13 +145,13 @@ cat > /root/.babylond/validator.json << EOF
     "min-self-delegation": "1"
 }
 EOF
-sudo systemctl restart babylond.service
-babylond tx checkpointing create-validator /root/.babylond/validator.json \
-    --chain-id=bbn-test-3 \
-    --gas="auto" \
-    --gas-adjustment="1.5" \
-    --gas-prices="0.025ubbn" \
-    --from=wallet
+# sudo systemctl restart babylond.service
+# babylond tx checkpointing create-validator /root/.babylond/validator.json \
+#     --chain-id=bbn-test-3 \
+#     --gas="auto" \
+#     --gas-adjustment="1.5" \
+#     --gas-prices="0.025ubbn" \
+#     --from=wallet
 }
 
 echo && echo -e " ${Red_font_prefix}babylon节点 一键安装脚本${Font_color_suffix} by \033[1;35moooooyoung\033[0m
