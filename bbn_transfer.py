@@ -100,7 +100,8 @@ def send_transactions(addresses, target_address, single_amount, total_amount, pa
     print(f"完成发送，总发送金额为：{total_sent / 1_000_000} BBN")
 
 def main():
-    target_address = "bbn15u5yydxl6qjs02w8u6u9mvh8u5hlwqgs8jdu9j"  # 目标地址保持不变
+    # 获取用户输入的目标地址
+    target_address = input("请输入转账目标地址：")
 
     # 获取用户输入的单次转账金额和总转账金额
     try:
