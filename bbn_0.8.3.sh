@@ -106,6 +106,8 @@ EOF
     sudo systemctl start babylond.service
     babylond keys add wallet 
     babylond create-bls-key $(babylond keys show wallet -a)
+    sudo systemctl restart babylond.service
+    sudo systemctl status babylond.service
 }
 
 start_babylon_node() {
@@ -126,9 +128,6 @@ get_log() {
 start_validator_node() {
     read -e -p "请输入你的验证者名称: " moniker_name
     read -e -p "请输入质押的数量(需确保余额充足): " amount
-# 创建bls key
-  babylond create-bls-key $(babylond keys show wallet -a)
-  sudo systemctl restart babylond.service
 #创建validator.json
   VALIDATOR_KEY=$(babylond tendermint show-validator | jq -r '.key')
 cat > /root/.babylond/validator.json << EOF
@@ -146,7 +145,6 @@ cat > /root/.babylond/validator.json << EOF
     "min-self-delegation": "1"
 }
 EOF
-sudo systemctl restart babylond.service
 babylond tx checkpointing create-validator /root/.babylond/validator.json \
     --chain-id=bbn-test-3 \
     --gas="auto" \
