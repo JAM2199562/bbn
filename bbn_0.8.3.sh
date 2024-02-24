@@ -62,7 +62,7 @@ install_babylon_env() {
     # curl -L https://snapshots-testnet.nodejumper.io/babylon-testnet/addrbook.json > $HOME/.babylond/config/addrbook.json
 
     # Set seeds
-    sed -i -e 's|^seeds *=.*|seeds = "49b4685f16670e784a0fe78f37cd37d56c7aff0e@3.14.89.82:20656,9cb1974618ddd541c9a4f4562b842b96ffaf1446@3.16.63.237:26656,1ecc4a9d703ad52d16bf30a592597c948c115176@165.154.244.14:26656,0ccb869ba63cf7730017c357189d01b20e4eb277@185.84.224.125:20656,5463943178cdb57a02d6d20964e4061dfcf0afb4@142.132.154.53:20656,b82b321380d1d949d1eed6da03696b1b2ef987ba@148.251.176.236:3000,49b15e202497c231ebe7b2a56bb46cfc60eff78c@135.181.134.151:46656,3774fb9996de16c2f2280cb2d938db7af88d50be@162.62.52.147:26656,26cb133489436035829b6920e89105046eccc841@178.63.95.125:26656,326fee158e9e24a208e53f6703c076e1465e739d@193.34.212.39:26659,868730197ee267db3c772414ec1cd2085cc036d4@148.251.235.130:17656,9d840ebd61005b1b1b1794c0cf11ef253faf9a84@43.157.95.203:26656"|' $HOME/.babylond/config/config.toml
+    sed -i -e 's|^seeds *=.*|seeds = "49b4685f16670e784a0fe78f37cd37d56c7aff0e@3.14.89.82:20656,9cb1974618ddd541c9a4f4562b842b96ffaf1446@3.16.63.237:26656,1ecc4a9d703ad52d16bf30a592597c948c115176@165.154.244.14:26656,0ccb869ba63cf7730017c357189d01b20e4eb277@185.84.224.125:20656,5463943178cdb57a02d6d20964e4061dfcf0afb4@142.132.154.53:20656,b82b321380d1d949d1eed6da03696b1b2ef987ba@148.251.176.236:3000,49b15e202497c231ebe7b2a56bb46cfc60eff78c@135.181.134.151:46656,3774fb9996de16c2f2280cb2d938db7af88d50be@162.62.52.147:26656,26cb133489436035829b6920e89105046eccc841@178.63.95.125:26656,326fee158e9e24a208e53f6703c076e1465e739d@193.34.212.39:26659,868730197ee267db3c772414ec1cd2085cc036d4@148.251.235.130:17656,9d840ebd61005b1b1b1794c0cf11ef253faf9a84@43.157.95.203:26656,868730197ee267db3c772414ec1cd2085cc036d4@148.251.235.130:17656,179a498904d880587cc37d07ebd1e01ff81a02fe@3.139.215.161:26656,8f618f4f40d1c27e27b760ca10246b8b113e94be@3.13.201.13:26656,ce1caddb401d530cc2039b219de07994fc333dcf@162.19.97.200:26656,26240e4061426d22d5594f91f2754a28a80494bc@109.199.96.75:26656,6460741d8b2701f6d733e0c5a9a52a9d5a924c9f@217.76.63.213:26656,07d1b69e4dc56d46dabe8f5eb277fcde0c6c9d1e@23.88.5.169:17656,e9913c53da2a7a1432ee65e17f8b90b072ff3ee6@109.199.113.189:26656,a31b620c076899133e44d195eae0d6308283230d@57.128.19.189:26656,40662747f0e01678dbdf1e50879f40a68139d7aa@35.163.58.204:26656,9e36d595b69c75f94771d9dee791f822578e14da@173.212.244.215:26656,3deaff1478542cf7f28123ad33be50d4bc08b728@2.56.97.152:26656,68de398f1d36546c002086b91f6018ed5c6105f2@5.189.136.136:26656,7138083f9a513a33d3fd4d477d28436ff368367a@84.247.133.117:26656"|' $HOME/.babylond/config/config.toml
 
     # Set minimum gas price
     sed -i -e 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.00001ubbn"|' $HOME/.babylond/config/app.toml
@@ -101,11 +101,11 @@ EOF
 
     sed -i -e "s|^key-name *=.*|key-name = \"wallet\"|" ~/.babylond/config/app.toml
     sed -i -e "s|^timeout_commit *=.*|timeout_commit = \"10s\"|" ~/.babylond/config/config.toml
-    echo -e "\033[36m请自行运行如下指令导入钱包并创建bls key\033[0m" 
-    echo -e "\033[35mbabylond keys add wallet --recover \033[0m"
-    echo -e "\033[35mbabylond create-bls-key \$(babylond keys show wallet -a)\033[0m"
     sudo systemctl daemon-reload
     sudo systemctl enable babylond.service
+    sudo systemctl start babylond.service
+    babylond keys add wallet 
+    babylond create-bls-key $(babylond keys show wallet -a)
 }
 
 start_babylon_node() {
@@ -128,6 +128,7 @@ start_validator_node() {
     read -e -p "请输入质押的数量(需确保余额充足): " amount
 # 创建bls key
   babylond create-bls-key $(babylond keys show wallet -a)
+  sudo systemctl restart babylond.service
 #创建validator.json
   VALIDATOR_KEY=$(babylond tendermint show-validator | jq -r '.key')
 cat > /root/.babylond/validator.json << EOF
