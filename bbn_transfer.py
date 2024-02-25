@@ -85,6 +85,11 @@ def send_transactions(addresses, target_address, single_amount, total_amount, pa
             print(f"未能为地址 {address} 获取有效余额。")
             continue  # 跳过当前迭代
 
+        # 检查余额是否大于100 BBN，如果是，则跳过此地址
+        if balance > 100 * 1_000_000:  # 将100 BBN转换为微BBN
+            print(f"{address} 的余额超过100 BBN，跳过此地址。")
+            continue  # 跳过当前迭代
+
         # 检查余额是否足够
         if balance >= single_amount_micro:
             print(f"准备从 {address} 发送 {single_amount} BBN 到 {target_address} ...")
@@ -98,6 +103,7 @@ def send_transactions(addresses, target_address, single_amount, total_amount, pa
         # time.sleep(sleep_duration)  # 如果需要可以取消注释并设置适当的sleep_duration
 
     print(f"完成发送，总发送金额为：{total_sent / 1_000_000} BBN")
+
 
 def main():
     # 获取用户输入的目标地址
