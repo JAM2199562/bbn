@@ -25,7 +25,7 @@ password = config.get('password', '')  # 使用默认值以防 'password' 不存
 def query_balance(address):
     try:
         raw_output = subprocess.check_output(["babylond", "query", "bank", "balances", address], text=True)
-        print(f"原始输出: {raw_output}")
+        # print(f"原始输出: {raw_output}")
         match = re.search(r'amount: "(\d+)"', raw_output)
         if match:
             return int(match.group(1))
