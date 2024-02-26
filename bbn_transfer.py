@@ -39,7 +39,12 @@ def send_transaction(address, target_address, amount, password):
         print("发送地址和接收地址相同，跳过转账操作。")
         return  # 直接返回，不执行后续代码
 
-    command = f"babylond tx bank send {address} {target_address} {amount}ubbn --gas=auto --gas-adjustment=2 --gas-prices=0.0025ubbn --chain-id=bbn-test-3 -y"
+    # 生成一个随机百分比（70% - 100%）
+    percentage = random.uniform(0.7, 1.0)
+    # 更新金额，并保持六位数的精度
+    adjusted_amount = round(amount * percentage, 6)
+
+    command = f"babylond tx bank send {address} {target_address} {adjusted_amount}ubbn --gas=auto --gas-adjustment=2 --gas-prices=0.0025ubbn --chain-id=bbn-test-3 -y"
     try:
         # 使用pexpect.spawn运行命令
         child = pexpect.spawn(command, encoding='utf-8', timeout=30)
@@ -61,6 +66,7 @@ def send_transaction(address, target_address, amount, password):
         print("在完成交易之前，进程意外结束。")
     except Exception as e:
         print(f"发送交易失败: {e}")
+
 
 def send_transactions(addresses, target_address, single_amount, total_amount, password):
     # 将金额从BBN转换为微BBN
