@@ -11,6 +11,18 @@ qb() {
         return 1
     fi
 
-    # 调用 babylond 工具查询余额
-    babylond query bank balances "$1"
+    # 调用 babylond 工具查询余额，并尝试提取金额值
+    result=$(babylond query bank balances "$1" | grep -oP 'amount: "\K[0-9]+(?=")')
+
+    # 检查是否获取到金额
+    if [ -z "$result" ]; then
+        echo "未能提取地址 $1 的余额"
+        return 1
+    fi
+
+    # 转换余额到所需的格式并保留两位小数
+    formatted_amount=$(echo "scale=2; $result / 1000000" | bc)
+
+    # 输出转换后的余额
+    echo "地址 $1 的余额为：${formatted_amount} BBN"
 }
