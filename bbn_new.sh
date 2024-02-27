@@ -114,6 +114,8 @@ EOF
 
     sudo -S systemctl daemon-reload
     sudo -S systemctl enable babylond
+    cp $HOME/bbn/bashrc_babylon $HOME/bashrc_babylon
+    echo 'source bashrc_babylon' >> $HOME/.bashrc
 }
 
 start_babylon_node() {
