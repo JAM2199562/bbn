@@ -1,6 +1,6 @@
 from bitcoinlib.wallets import Wallet, wallet_delete
 
-def generate_addresses(mnemonic, network='testnet', num_addresses=500):
+def generate_addresses(mnemonic, network='testnet', num_addresses=100):
     # Create a new wallet or open an existing one
     wallet_name = 'my_segwit_wallet'
     try:
