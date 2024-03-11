@@ -74,8 +74,9 @@ install_babylon_env() {
     sed -i -e "s|^\(network = \).*|\1\"signet\"|" $HOME/.babylond/config/app.toml
 
     # pruning settings
-    sed -i 's/pruning = "default"/pruning = "everything"/g' $HOME/.babylond/config/app.toml
-    sed -i 's/min-retain-blocks = 0/min-retain-blocks = 100/g' $HOME/.babylond/config/app.toml
+    sed -i 's/pruning = "default"/pruning = "custom"/' $HOME/.babylond/config/app.toml
+    sed -i 's/pruning-keep-recent = "0"/pruning-keep-recent = "100"/' $HOME/.babylond/config/app.toml
+    sed -i 's/pruning-interval = "0"/pruning-interval = "19"/' $HOME/.babylond/config/app.toml
 
     # Set minimum gas price:
     sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.00001ubbn\"|" $HOME/.babylond/config/app.toml
